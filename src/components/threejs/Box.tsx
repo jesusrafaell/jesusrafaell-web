@@ -5,32 +5,41 @@ import { Vector3 } from 'three';
 
 interface Props {
 	position: number[];
+	mobile: boolean;
 }
 
-function Box({ position }: Props) {
-	// This reference gives us direct access to the THREE.Mesh object
+function Box({ position, mobile }: Props) {
 	const ref = useRef<three.Mesh>(null);
-	// Hold state for hovered and clicked events
-	const [hovered, hover] = useState(false);
-	const [clicked, click] = useState(false);
 
-	// Subscribe this component to the render-loop, rotate the mesh every frame
+	const [vector, setVector] = useState(new Vector3(...position));
+	const [size, setSize] = useState(mobile ? 0.5 : 1);
 
-	useFrame((state: RootState, delta) => (ref.current!.rotation!.y += delta));
-	useFrame((state: RootState, delta) => (ref.current!.rotation!.x += delta));
+	const [hover, setHover] = useState(false);
+	const [click, setClick] = useState(false);
 
-	const vector = new Vector3(...position);
+	useFrame((state: RootState, delta) => {
+		ref.current!.rotation!.y += delta;
+		ref.current!.rotation!.x += delta;
+	});
+
+	useFrame((state, delta) => {
+		ref.current!.position.y = Math.sin(state.clock.getElapsedTime()) * 1;
+		ref.current!.position.x = Math.sin(state.clock.getElapsedTime()) * 1;
+	});
+
+	// const { scale } = useSpring({ scale: active ? 1.5 : 1 });
+
 	return (
 		<mesh
 			position={vector}
 			ref={ref}
-			scale={clicked ? 2 : 1}
-			onClick={() => click(!clicked)}
-			onPointerOver={() => hover(true)}
-			onPointerOut={() => hover(false)}
+			// scale={hover ? 1 / 2 : 1}
+			// onClick={() => setClick(!click)}
+			onPointerOver={() => setHover(true)}
+			onPointerOut={() => setHover(false)}
 		>
-			<boxGeometry args={[1, 1, 1]} />
-			<meshStandardMaterial color={hovered ? '#FFCDCD' : '#DADADA'} />
+			<boxGeometry args={[size, size, size]} />
+			<meshStandardMaterial color={hover ? '#E53939' : '#DADADA'} />
 		</mesh>
 	);
 }

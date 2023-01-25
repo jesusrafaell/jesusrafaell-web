@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { init } from 'ityped';
 import gsap from 'gsap';
 import splash from '../images/splashbad.png';
@@ -30,20 +30,20 @@ function Main() {
 
 	const textRef = useRef<HTMLSpanElement>(null);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		initGsap();
-		if (!textRef.current) {
-			return;
+		if (textRef.current) {
+			console.log('ityped');
+			init(textRef.current, {
+				showCursor: true,
+				strings: ['Jesus.', 'Developer.', 'FullStack', 'Coder'],
+				startDelay: 500,
+				backDelay: 2000,
+				typeSpeed: 200,
+				backSpeed: 100,
+			});
 		}
-		init(textRef.current, {
-			showCursor: true,
-			strings: ['Jesus.', 'Developer.', 'FullStack', 'Coder'],
-			startDelay: 500,
-			backDelay: 2000,
-			typeSpeed: 200,
-			backSpeed: 100,
-		});
-	});
+	}, []);
 
 	return (
 		<div className='h-screen w-screen flex items-center justify-center mb-12 bg-fixed bg-center bg-cover custom-img'>

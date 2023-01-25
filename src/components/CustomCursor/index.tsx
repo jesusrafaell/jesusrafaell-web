@@ -14,7 +14,6 @@ const CustomCursor = () => {
 		if (typeof window !== 'undefined') {
 			setShowCursor(!isMobile());
 		}
-		console.log('change size');
 	}, []);
 
 	const mainCursor = useRef<HTMLDivElement>(null);

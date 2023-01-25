@@ -253,7 +253,7 @@ const Projects: React.FC = () => {
 	const handleAnimationBgBack = () => {
 		setBgAnimation(false);
 	};
-	console.log(bgAnimation);
+	// console.log(bgAnimation);
 
 	return (
 		<div className='content-slider'>

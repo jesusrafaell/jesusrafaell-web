@@ -19,7 +19,6 @@ const IndexPage: React.FC<PageProps> = () => {
 		if (typeof window !== 'undefined') {
 			setMobile(isMobile());
 		}
-		console.log('change size');
 	}, []);
 
 	return (
@@ -34,12 +33,12 @@ const IndexPage: React.FC<PageProps> = () => {
 				<About />
 			</section>
 			<section id='threejs' className='relative'>
-				<div style={{ width: '100vw', height: '100vh' }}>
+				<div className='canvas'>
 					<Canvas>
 						<ambientLight />
-						<pointLight position={[8, 10, 10]} />
-						<Box position={[-1.2, 0, 0]} />
-						<Particles count={mobile ? 500 : 2000} mouse={mouse} />
+						<pointLight position={[10, 10, 10]} />
+						<Box position={[0, 0, 0]} mobile={mobile} />
+						<Particles count={mobile ? 400 : 1500} mouse={mouse} />
 						{/* <Triangle /> */}
 					</Canvas>
 				</div>
