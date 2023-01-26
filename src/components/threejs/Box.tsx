@@ -24,20 +24,13 @@ function Box({ position, mobile }: Props) {
 
 	useFrame((state, delta) => {
 		ref.current!.position.y = Math.sin(state.clock.getElapsedTime()) * 1;
-		ref.current!.position.x = Math.sin(state.clock.getElapsedTime()) * 1;
+		ref.current!.position.x = position[0] + Math.sin(state.clock.getElapsedTime()) * 1;
 	});
 
 	// const { scale } = useSpring({ scale: active ? 1.5 : 1 });
 
 	return (
-		<mesh
-			position={vector}
-			ref={ref}
-			// scale={hover ? 1 / 2 : 1}
-			// onClick={() => setClick(!click)}
-			onPointerOver={() => setHover(true)}
-			onPointerOut={() => setHover(false)}
-		>
+		<mesh position={vector} ref={ref} onPointerOver={() => setHover(true)} onPointerOut={() => setHover(false)}>
 			<boxGeometry args={[size, size, size]} />
 			<meshStandardMaterial color={hover ? '#E53939' : '#DADADA'} />
 		</mesh>

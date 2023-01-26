@@ -9,6 +9,7 @@ import { PageProps } from 'gatsby';
 import { Canvas } from 'react-three-fiber';
 import { useEffect, useState } from 'react';
 import { isMobile } from '../components/CustomCursor';
+import Triangle from '../components/threejs/Triangle';
 
 const IndexPage: React.FC<PageProps> = () => {
 	const mouse = React.useRef([0, 0]);
@@ -37,9 +38,9 @@ const IndexPage: React.FC<PageProps> = () => {
 					<Canvas>
 						<ambientLight />
 						<pointLight position={[10, 10, 10]} />
-						<Box position={[0, 0, 0]} mobile={mobile} />
+						<Box position={[-2, 0, 0]} mobile={mobile} />
+						<Triangle position={[0, 0, 0]} />
 						<Particles count={mobile ? 400 : 1500} mouse={mouse} />
-						{/* <Triangle /> */}
 					</Canvas>
 				</div>
 			</section>
