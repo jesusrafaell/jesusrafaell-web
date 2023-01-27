@@ -23,8 +23,8 @@ function Box({ position, mobile }: Props) {
 	});
 
 	useFrame((state, delta) => {
-		ref.current!.position.y = Math.sin(state.clock.getElapsedTime()) * 1;
-		ref.current!.position.x = position[0] + Math.sin(state.clock.getElapsedTime()) * 1;
+		ref.current!.position.y = Math.sin(state.clock.getElapsedTime()) * 8;
+		ref.current!.position.x = position[0] + Math.sin(state.clock.getElapsedTime()) * 8;
 	});
 
 	// const { scale } = useSpring({ scale: active ? 1.5 : 1 });

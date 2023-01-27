@@ -6,13 +6,43 @@ import About from '../components/About';
 import Box from '../components/threejs/Box';
 import Particles from '../components/threejs/Particles';
 import { PageProps } from 'gatsby';
-import { Canvas } from 'react-three-fiber';
+import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import { useEffect, useState } from 'react';
 import { isMobile } from '../components/CustomCursor';
 import Triangle from '../components/threejs/Triangle';
+import * as THREE from 'three';
+import { OrbitControls, CameraShake, Environment } from '@react-three/drei';
+
+function Rig({ hover }: any) {
+	const [vec] = useState(() => new THREE.Vector3());
+	const { camera, mouse } = useThree();
+
+	console.log(hover);
+
+	useFrame(() => {
+		if (hover) {
+			camera.position.lerp(vec.set(mouse.x * 6, 30 + mouse.y * 6, 30), 0.05);
+		} else {
+			camera.position.lerp(vec.set(0, 160, 160), 0.05);
+		}
+	});
+
+	return (
+		<CameraShake
+			maxYaw={0.01}
+			maxPitch={0.01}
+			maxRoll={0.01}
+			yawFrequency={0.5}
+			pitchFrequency={0.5}
+			rollFrequency={0.4}
+		/>
+	);
+}
 
 const IndexPage: React.FC<PageProps> = () => {
 	const mouse = React.useRef([0, 0]);
+
+	const [hover, setHover] = useState(false);
 
 	const [mobile, setMobile] = useState(false);
 
@@ -34,13 +64,20 @@ const IndexPage: React.FC<PageProps> = () => {
 				<About />
 			</section>
 			<section id='threejs' className='relative'>
-				<div className='canvas'>
-					<Canvas>
+				<div
+					className='canvas'
+					onPointerOver={() => setHover(true)}
+					onPointerOut={() => setHover(false)}
+					//
+				>
+					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 160, 160], fov: 20 }}>
+						{/* <Triangle position={[0, 0, 0]} /> */}
 						<ambientLight />
 						<pointLight position={[10, 10, 10]} />
 						<Box position={[-2, 0, 0]} mobile={mobile} />
-						<Triangle position={[0, 0, 0]} />
-						<Particles count={mobile ? 400 : 1500} mouse={mouse} />
+						<Particles count={mobile ? 400 : 1000} mouse={mouse} />
+						<Environment preset='warehouse' />
+						<Rig hover={hover} />
 					</Canvas>
 				</div>
 			</section>

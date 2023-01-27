@@ -94,6 +94,6 @@
 		@apply w-screen h-screen max-h-screen;
 	}
 	.canvas {
-		@apply w-full h-full justify-center items-center text-center;
+		@apply w-full h-full justify-center items-center text-center bg-black;
 	}
 }
