@@ -7,11 +7,13 @@ import Box from '../components/threejs/Box';
 import Particles from '../components/threejs/Particles';
 import { PageProps } from 'gatsby';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { isMobile } from '../components/CustomCursor';
 import Triangle from '../components/threejs/Triangle';
 import * as THREE from 'three';
 import { OrbitControls, CameraShake, Environment } from '@react-three/drei';
+import GltfModel from '../components/threejs/gltf';
+// import Gltf from '../images/threeJS/rocket.gltf';
 
 function Rig({ hover }: any) {
 	const [vec] = useState(() => new THREE.Vector3());
@@ -71,13 +73,20 @@ const IndexPage: React.FC<PageProps> = () => {
 					//
 				>
 					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 160, 160], fov: 20 }}>
+						<Suspense fallback={null}>
+							<ambientLight intensity={0.3} />
+							<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+							<pointLight position={[-10, -10, -10]} />
+							<GltfModel scale={40} position={[0, 0, 0]} />
+							<OrbitControls />
+						</Suspense>
 						{/* <Triangle position={[0, 0, 0]} /> */}
-						<ambientLight />
-						<pointLight position={[10, 10, 10]} />
-						<Box position={[-2, 0, 0]} mobile={mobile} />
-						<Particles count={mobile ? 400 : 1000} mouse={mouse} />
-						<Environment preset='warehouse' />
-						<Rig hover={hover} />
+						{/* <ambientLight /> */}
+						{/* <pointLight position={[10, 10, 10]} /> */}
+						{/* <Box position={[-2, 0, 0]} mobile={mobile} /> */}
+						{/* <Particles count={mobile ? 400 : 1000} mouse={mouse} /> */}
+						{/* <Environment preset='warehouse' /> */}
+						{/* <Rig hover={hover} /> */}
 					</Canvas>
 				</div>
 			</section>

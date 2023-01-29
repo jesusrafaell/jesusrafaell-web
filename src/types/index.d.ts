@@ -4,3 +4,5 @@ declare module '*.jpeg';
 declare module '*.jpg';
 declare module '*.ico';
 declare module '*.gif';
+declare module '*.gltf';
+declare module '*.glb';
