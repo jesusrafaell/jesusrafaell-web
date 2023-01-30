@@ -1,28 +1,36 @@
-import React, { useRef, useState } from 'react';
-import { useLoader, useFrame } from '@react-three/fiber';
+import React, { useEffect, useRef } from 'react';
+import { useFrame } from 'react-three-fiber';
+import { Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import glb from '../../../images/threeJS/rocket.gltf';
 
-const GltfModel = ({ scale = 40, position = [0, 0, 0] }: any) => {
-	const ref: any = useRef();
-	const gltf = useLoader(GLTFLoader, glb);
-	const [hovered, hover] = useState(false);
+interface Props {
+	modelPath: string;
+	scale: number;
+	position: number[];
+}
 
-	// Subscribe this component to the render-loop, rotate the mesh every frame
-	useFrame((state, delta) => (ref.current.rotation.y += 0.003));
+const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
+	const model = useRef<any>();
+
+	// useFrame((state) => {
+	// 	model.current.rotation.x = state.clock.getElapsedTime() * 0.5;
+	// 	model.current.rotation.y = state.clock.getElapsedTime() * 0.5;
+	// });
+
+	const gltfRef = useRef<any>();
+
+	const loader = new GLTFLoader();
+	loader.load(modelPath, (gltf) => {
+		gltfRef.current = gltf.scene;
+	});
+
+	if (!gltfRef.current) return null;
 
 	return (
-		<>
-			<primitive
-				ref={ref}
-				object={gltf}
-				position={position}
-				scale={hovered ? scale * 1.2 : scale}
-				onPointerOver={() => hover(true)}
-				onPointerOut={() => hover(false)}
-			/>
-		</>
+		<mesh ref={model}>
+			<primitive object={gltfRef.current} />
+		</mesh>
 	);
 };
 
-export default GltfModel;
+export default Model;

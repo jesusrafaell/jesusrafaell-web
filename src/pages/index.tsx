@@ -13,7 +13,7 @@ import Triangle from '../components/threejs/Triangle';
 import * as THREE from 'three';
 import { OrbitControls, CameraShake, Environment } from '@react-three/drei';
 import GltfModel from '../components/threejs/gltf';
-// import Gltf from '../images/threeJS/rocket.gltf';
+import rocket from './rocket.glb';
 
 function Rig({ hover }: any) {
 	const [vec] = useState(() => new THREE.Vector3());
@@ -72,12 +72,13 @@ const IndexPage: React.FC<PageProps> = () => {
 					onPointerOut={() => setHover(false)}
 					//
 				>
-					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 160, 160], fov: 20 }}>
-						<Suspense fallback={null}>
+					{/* <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 160, 160], fov: 20 }}> */}
+					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 100, 100], fov: 20 }}>
+						<Suspense fallback={<html>Loading...</html>}>
 							<ambientLight intensity={0.3} />
 							<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
 							<pointLight position={[-10, -10, -10]} />
-							<GltfModel scale={40} position={[0, 0, 0]} />
+							<GltfModel modelPath={rocket} scale={40} position={[0, 0, 0]} />
 							<OrbitControls />
 						</Suspense>
 						{/* <Triangle position={[0, 0, 0]} /> */}
