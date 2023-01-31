@@ -60,8 +60,10 @@ export default function Particles({ count, mouse }: Props) {
 		<>
 			<pointLight ref={light} distance={40} intensity={8} color='lightblue' />
 			<instancedMesh ref={mesh} args={[undefined, undefined, count]}>
-				<dodecahedronBufferGeometry attach='geometry' args={[0.2, 0]} />
-				<meshPhongMaterial attach='material' color='#fff' />
+				{/* <dodecahedronBufferGeometry attach='geometry' args={[0.2, 0]} />
+				<meshPhongMaterial attach='material' color='#fff' /> */}
+				<sphereGeometry attach='geometry' args={[0.2, 0]} />
+				<meshStandardMaterial attach='material' color='#fff' />
 			</instancedMesh>
 		</>
 	);
