@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useFrame } from 'react-three-fiber';
-import { Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as three from 'three';
 
 interface Props {
 	modelPath: string;
@@ -10,14 +10,16 @@ interface Props {
 }
 
 const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
-	const model = useRef<any>();
-
-	// useFrame((state) => {
-	// 	model.current.rotation.x = state.clock.getElapsedTime() * 0.5;
-	// 	model.current.rotation.y = state.clock.getElapsedTime() * 0.5;
-	// });
+	const refModel = useRef<three.Mesh>(null);
 
 	const gltfRef = useRef<any>();
+
+	useFrame((state) => {
+		if (refModel.current) {
+			refModel.current!.rotation.x = state.clock.getElapsedTime() * 0.5;
+			refModel.current!.rotation.y = state.clock.getElapsedTime() * 0.5;
+		}
+	});
 
 	const loader = new GLTFLoader();
 	loader.load(modelPath, (gltf) => {
@@ -27,7 +29,7 @@ const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
 	if (!gltfRef.current) return null;
 
 	return (
-		<mesh ref={model}>
+		<mesh ref={refModel}>
 			<primitive object={gltfRef.current} />
 		</mesh>
 	);

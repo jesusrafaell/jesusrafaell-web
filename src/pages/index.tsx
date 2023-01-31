@@ -73,12 +73,13 @@ const IndexPage: React.FC<PageProps> = () => {
 					//
 				>
 					{/* <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 160, 160], fov: 20 }}> */}
-					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 100, 100], fov: 20 }}>
+					<Canvas shadows dpr={[1, 2]} camera={{ position: [0, 30, 30], fov: 20 }}>
 						<Suspense fallback={<html>Loading...</html>}>
 							<ambientLight intensity={0.3} />
 							<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
 							<pointLight position={[-10, -10, -10]} />
 							<GltfModel modelPath={rocket} scale={40} position={[0, 0, 0]} />
+							<Particles count={mobile ? 400 : 1000} mouse={mouse} />
 							<OrbitControls />
 						</Suspense>
 						{/* <Triangle position={[0, 0, 0]} /> */}
