@@ -1,19 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { useFrame } from 'react-three-fiber';
+import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as three from 'three';
-import './index.scss';
+import './loading.scss';
 
 interface Props {
 	modelPath: string;
 	scale: number;
 	position: number[];
+	setLoading: any;
 }
 
-const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
+const Model: React.FC<Props> = ({ modelPath, scale, position, setLoading }) => {
 	const refModel = useRef<three.Mesh>(null);
 
-	const gltfRef = useRef<any>();
+	const gltfRef = useRef<three.Group>();
 
 	useFrame((state) => {
 		if (refModel.current) {
@@ -23,16 +24,21 @@ const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
 	});
 
 	const loader = new GLTFLoader();
-	loader.load(modelPath, (gltf) => {
-		gltfRef.current = gltf.scene;
-	});
+	loader.load(
+		modelPath,
+		(gltf) => {
+			gltfRef.current = gltf.scene;
+		},
+		(xhr) => {
+			console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+			setLoading(true);
+		},
+		(err) => {
+			console.log('Error load GLTF');
+		}
+	);
 
-	if (!gltfRef.current)
-		return (
-			<div className='spinner-container'>
-				<div className='loading-spinner'></div>
-			</div>
-		);
+	if (!gltfRef.current) return null;
 
 	return (
 		<mesh ref={refModel}>

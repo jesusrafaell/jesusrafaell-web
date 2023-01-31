@@ -27,8 +27,11 @@
 
 @layer base {
 	* {
-		@apply cursor-none; /*hidden cursor*/
 		@apply font-gravity-regular m-0 p-0 box-border;
+		@apply cursor-none; /*hidden cursor*/
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
 	}
 
 	html {
