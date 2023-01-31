@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as three from 'three';
+import './index.scss';
 
 interface Props {
 	modelPath: string;
@@ -26,7 +27,12 @@ const Model: React.FC<Props> = ({ modelPath, scale, position }) => {
 		gltfRef.current = gltf.scene;
 	});
 
-	if (!gltfRef.current) return null;
+	if (!gltfRef.current)
+		return (
+			<div className='spinner-container'>
+				<div className='loading-spinner'></div>
+			</div>
+		);
 
 	return (
 		<mesh ref={refModel}>
