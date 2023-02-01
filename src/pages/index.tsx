@@ -44,7 +44,7 @@ function Rig({ hover }: any) {
 const IndexPage: React.FC<PageProps> = () => {
 	const mouse = useRef([0, 0]);
 
-	const [loading, setLading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const [mobile, setMobile] = useState(false);
 
@@ -64,13 +64,21 @@ const IndexPage: React.FC<PageProps> = () => {
 			cameraRef.current.position.y = 120;
 			cameraRef.current.position.z = 120;
 		}
-		console.log('posotion change');
-		if (cameraRef.current && hover) {
-			cameraRef.current.fov = 10;
-		} else if (cameraRef.current) {
-			cameraRef.current.fov = 30;
+	});
+
+	const [fovState, setFovState] = useState<number>(30);
+
+	const handleClik = () => {
+		if (cameraRef.current.fov === 30) {
+			setFovState(10);
+		} else if (cameraRef.current.fov) {
+			setFovState(30);
 		}
-	}, [hover, cameraRef]);
+	};
+
+	useEffect(() => {
+		cameraRef.current.fov = fovState;
+	}, [fovState]);
 
 	return (
 		<Layout>
@@ -87,7 +95,7 @@ const IndexPage: React.FC<PageProps> = () => {
 				<div className='canvas'>
 					<button
 						style={{ position: 'absolute', bottom: '20px', zIndex: 9999 }}
-						onClick={() => setHover(!hover)}
+						onClick={handleClik}
 						className='button'
 					>
 						Zoom
@@ -97,7 +105,14 @@ const IndexPage: React.FC<PageProps> = () => {
 							<ambientLight intensity={0.3} />
 							<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
 							<pointLight position={[-10, -10, -10]} />
-							<GltfModel modelPath={rocket} scale={30} position={[0, 0, 0]} setLoading={setLading} />
+							<GltfModel
+								modelPath={rocket}
+								// scale={fovState === 10 ? 2 : 0.5}
+								scale={2}
+								position={[0, 0, 0]}
+								loading={loading}
+								setLoading={setLoading}
+							/>
 							<Particles count={mobile ? 400 : 1000} mouse={mouse} />
 							<OrbitControls enablePan={false} enableZoom={false} />
 						</Suspense>
